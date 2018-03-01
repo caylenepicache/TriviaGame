@@ -14,14 +14,10 @@ reset: function() {
     count = 30;
 
 }, */
-start: function() {
-
-
+stop: function() {
+    clearInterval(count);
 },
-/*stop: function() {
-    clearInterval(intervalId);
-    clockRunning = false;
-},
+/*
 recordLap: function() {
     var converted = stopwatch.timeConverter(stopwatch.time);
     $("#laps").append("<p>Lap " + stopwatch.lap + " : " + converted + "</p>");
@@ -51,7 +47,7 @@ questionTimer: function() {
         question: 'Sushi is one of the most recognizable dishes from Japan. What does sushi roughly translate to?',
         choices: ['A. raw fish', 'B. seaweed and rice', 'C. vinegar rice', 'D. rice roll'],
         answer: 3,
-        gif: 'assets/images/GIF.gif'
+        gif: 'assets/images/sushi.gif'
 
     },
     q2 = {
@@ -118,8 +114,6 @@ questionTimer: function() {
   ];
 
 
-
-
 $("#startScreen").on('click', function(){
     console.log('Game begins');
     $("#startScreen").hide();
@@ -151,7 +145,21 @@ function retrieveQuestions(){
     if (value == questionBox[currentQuestion].answer) {
         console.log('TRUE');
         correct++;
+        triviaGame.stop();
+        console.log(count);
         console.log("Correct: " + correct);
+        $("#displayTimer").hide();
+        $("#displayQuestion").hide();
+        $("#choiceone").hide();
+        $("#choicetwo").hide();
+        $("#choicethree").hide();
+        $("#choicefour").hide();
+        $("#result").html('Correct!');
+        $("#gifHere").attr('src', questionBox[currentQuestion].gif);
+
+
+
+
         //function FOR RIGHT ANSWER
         //break to next question
     }
@@ -159,12 +167,14 @@ function retrieveQuestions(){
         console.log('FALSE');
         wrong++;
         console.log("Wrong: " + wrong);
+        currentQuestion++;
         //FUNCTION FOR WRONG ANSWER
         //BREAK TO NEXT QUESTION
     };
 
-
 });
+
+
 
 };
 
