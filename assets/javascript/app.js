@@ -5,37 +5,47 @@ var correct = 0;
 var wrong = 0;
 var answered = 0;
 var unanswered = 0;
-var count = 31;
+var count = 30;
 var currentQuestion = 0;
 var value;
 
+var counter;
+var isClockRunning = false;
+
 var triviaGame = {
 
-questionTimer: function() {
+reset: function () {
+    clearInterval(counter);
     count = 30;
-    var counter = setInterval(timer, 1000);
-    function timer(){
-        if (count === 0) {
-            clearInterval(count);
-            //timedOut();
-        }
-        if (count > 0) {
-            count--;
-        }
-        $("#displayTimer").html("Time Remaining: " + count);
-        //console.log(count);
-}
+    $("#displayTimer").html("Time Remaining: " + count);
 },
 
 start: function() {
-    counter = setInterval(questionTimer.count, 1000);
+    if (!isClockRunning) {
+    counter = setInterval(triviaGame.questionTimer, 1000);
+    isClockRunning = true;
+    }
 }, 
 
 stop: function() {
-    clearInterval(this.questionTimer);
-    clearInterval(count);
-    clearInterval(this.questionTimer.timer);
+    clearInterval(counter);
+    isClockRunning = false;
+
 },
+
+questionTimer: function() {
+    count--;
+    //console.log(count);
+    if (count === 0) {
+        clearInterval(count);
+        //timedOut();
+    }
+    if (count >= 0) {
+    $("#displayTimer").html("Time Remaining: " + count);
+    }
+    //console.log(count);
+}
+
 
 };
 
@@ -129,7 +139,8 @@ function letsPlay() {
 
 function retrieveQuestions(){
 
-    triviaGame.questionTimer();
+
+    triviaGame.start();
 
 
     $("#displayTimer").show();
@@ -172,8 +183,7 @@ function retrieveQuestions(){
 
 function correctResponse() {
     correct++;
-    //triviaGame.stop();
-    console.log(count);
+    triviaGame.stop();
     console.log("Correct: " + correct);
     $("#displayTimer").hide();
     $("#displayQuestion").hide();
@@ -181,6 +191,8 @@ function correctResponse() {
     $("#choicetwo").hide();
     $("#choicethree").hide();
     $("#choicefour").hide();
+    $("#result").show();
+    $("#gifHere").show();
     $("#result").html('Correct!');
     $("#gifHere").attr('src', questionBox[currentQuestion].gif);
     nextQuestion();
@@ -188,7 +200,7 @@ function correctResponse() {
 
 function incorrectResponse(){
     wrong++;
-    //triviaGame.stop();
+    triviaGame.stop();
     console.log("Wrong: " + wrong);
     $("#displayTimer").hide();
     $("#displayQuestion").hide();
@@ -196,6 +208,8 @@ function incorrectResponse(){
     $("#choicetwo").hide();
     $("#choicethree").hide();
     $("#choicefour").hide();
+    $("#result").show();
+    $("#gifHere").show();
     $("#result").html('wrong');
     $("#gifHere").attr('src', questionBox[currentQuestion].gif);
     nextQuestion();
@@ -205,7 +219,8 @@ function nextQuestion(){
     if (currentQuestion < 10) {
     currentQuestion++;
     console.log(currentQuestion);
-    //triviaGame.stop();
+    answered++;
+    triviaGame.reset();
     setTimeout(clearScreen,6000);
     setTimeout(retrieveQuestions,6100);
 }
@@ -215,13 +230,14 @@ function nextQuestion(){
 }
 
 function clearScreen(){
-    $("#result").hide();
+    $("#result").empty();
+    $("#gifHere").empty();
     $("#gifHere").hide();
-    $("#displayTimer").hide();
+    $('[id^="choice"]').unbind('click');
+    //$("#displayTimer").hide();
 }
 
-
-
+//need to add what happens when timer hits zero
 
 
 });
