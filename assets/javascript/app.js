@@ -8,7 +8,6 @@ var unanswered = 0;
 var count = 30;
 var currentQuestion = 0;
 var value;
-
 var counter;
 var isClockRunning = false;
 
@@ -35,15 +34,13 @@ stop: function() {
 
 questionTimer: function() {
     count--;
-    //console.log(count);
     if (count === 0) {
         clearInterval(count);
-        //timedOut();
+        timedOut();
     }
     if (count >= 0) {
     $("#displayTimer").html("Time Remaining: " + count);
     }
-    //console.log(count);
 }
 
 
@@ -66,13 +63,13 @@ questionTimer: function() {
 
     },
     q3 = {
-        question: 'What is the capital of Japan',
+        question: 'What is the capital of Japan?',
         choices: ['A. Kyoto', 'B. Hiroshima', 'C. Okinawa', 'D. Tokyo'],
         answer: 4,
         gif: 'assets/images/tokyo.gif'
     },
     q4 = {        
-        question: 'Ikebana is a popular Japanese art of arranging _______',
+        question: 'Ikebana is a popular Japanese art of arranging _______.',
         choices: ['A. Fruit', 'B. Books', 'C. Furniture', 'D. Flowers'],
         answer: 4,
         gif: 'assets/images/ikebana.gif'
@@ -122,14 +119,33 @@ questionTimer: function() {
   ];
 
 
+
+$("#startAgain").hide();
 $("#startScreen").on('click', function(){
     console.log('Game begins');
     $("#startScreen").hide();
+    $("#startAgain").hide();
     letsPlay();
 });
 
-function reset(){
+function resetGame() {
+    $("#startAgain").hide();
+    correct = 0;
+    wrong = 0;
+    answered = 0;
+    unanswered = 0;
+    count = 30;
     currentQuestion = 0;
+    var value = null;
+    $('[id^="choice"]').unbind('click');
+    $("#displayQuestion").unbind();
+    $("#choiceone").unbind();
+    $("#choicetwo").unbind();
+    $("#choicethree").unbind();
+    $("#choicefour").unbind();
+    $("#gifHere").unbind();
+
+    letsPlay();
 }
 
 
@@ -149,6 +165,13 @@ function retrieveQuestions(){
     $("#choicetwo").show();
     $("#choicethree").show();
     $("#choicefour").show();
+    $("#gifHere").hide();
+    $("#result").hide();
+    $("#correctTally").hide();
+    $("#incorrectTally").hide();
+    $("#unansweredTally").hide();
+    $("#answeredTally").hide();
+
 
     
     $("#displayQuestion").html(questionBox[currentQuestion].question);
@@ -183,6 +206,7 @@ function retrieveQuestions(){
 
 function correctResponse() {
     correct++;
+    answered++;
     triviaGame.stop();
     console.log("Correct: " + correct);
     $("#displayTimer").hide();
@@ -200,6 +224,7 @@ function correctResponse() {
 
 function incorrectResponse(){
     wrong++;
+    answered++;
     triviaGame.stop();
     console.log("Wrong: " + wrong);
     $("#displayTimer").hide();
@@ -210,23 +235,23 @@ function incorrectResponse(){
     $("#choicefour").hide();
     $("#result").show();
     $("#gifHere").show();
-    $("#result").html('wrong');
+    $("#result").html('Incorrect!');
     $("#gifHere").attr('src', questionBox[currentQuestion].gif);
     nextQuestion();
 }
 
 function nextQuestion(){
-    if (currentQuestion < 10) {
+    if (currentQuestion < 9) {
     currentQuestion++;
     console.log(currentQuestion);
-    answered++;
     triviaGame.reset();
-    setTimeout(clearScreen,6000);
-    setTimeout(retrieveQuestions,6100);
+    setTimeout(clearScreen,2000);
+    setTimeout(retrieveQuestions,2100);
 }
-   // else {
-
-//}
+    else {
+        triviaGame.stop();
+        finalTally();
+    }
 }
 
 function clearScreen(){
@@ -237,7 +262,47 @@ function clearScreen(){
     //$("#displayTimer").hide();
 }
 
-//need to add what happens when timer hits zero
+function timedOut() {
+    unanswered++;
+    triviaGame.stop();
+    console.log("Unanswered");
+    $("#displayTimer").hide();
+    $("#displayQuestion").hide();
+    $("#choiceone").hide();
+    $("#choicetwo").hide();
+    $("#choicethree").hide();
+    $("#choicefour").hide();
+    $("#result").show();
+    $("#gifHere").show();
+    $("#result").html("Time's Up!");
+    $("#gifHere").attr('src', questionBox[currentQuestion].gif);
+    nextQuestion();
+}
+
+function finalTally(){
+    triviaGame.stop();
+    $("#correctTally").show();
+    $("#incorrectTally").show();
+    $("#answeredTally").show();
+    $("#unansweredTally").show();
+    $("#startAgain").show();
+    $("#result").hide();
+    $("#gifHere").hide();
+    $("#correctTally").html("Correct: " + correct);
+    $("#incorrectTally").html("Incorrect: " + wrong);
+    $("#answeredTally").html("Answered: " + answered);
+    $("#unansweredTally").html("Unanswered: " + unanswered);
+    console.log(unanswered);
+    $("#startAgain").one('click', function(){
+        $("#startScreen").hide();
+        resetGame();
+    });
+
+
+
+}
+
+
 
 
 });
