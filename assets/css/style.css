@@ -1,0 +1,66 @@
+body {
+    background-image: url("../images/sakura.png");
+    margin-left: 17.5%;
+    margin-right: 17.5%;
+    background-position: fixed;
+    background-repeat: repeat;
+}
+
+#bannerimg {
+    width: 78%;
+    margin-left: 9%;
+    margin-right: 17.5%;
+}
+.gameContainer {
+    width: 950px;
+    height: 800px;
+    border: 1px #000 solid;
+    text-align: center;
+    background-color: #79B76E;
+}
+
+#displayQuestion {
+    font-family: 'Merienda', cursive;
+    font-size: 40px;
+}
+
+#choiceone, #choicetwo, #choicethree, #choicefour {
+    font-family:'Shadows Into Light', cursive;
+    font-size: 35px;
+    color: #008080;
+}
+
+#choiceone:hover, #choicetwo:hover, #choicethree:hover, #choicefour:hover {
+    text-decoration: underline;
+    color: #91414D;
+    font-weight: bolder;
+    font-size: 35px;
+    text-shadow: 2px 2px #777;
+    cursor: pointer;
+}
+
+#displayTimer, #result {
+    font-family: 'Merienda', cursive;
+    font-size: 30px;
+}
+
+#displayTimer {
+    color: #91414D;
+}
+
+#result {
+    font-size: 50px;
+    color: #008080;
+}
+
+#correctTally, #incorrectTally, #answeredTally, #unansweredTally {
+    font-family: 'Shadows Into Light', cursive;
+    font-size: 50px;
+}
+
+#startAgain, #startScreen {
+    font-family:'Fredoka One', cursive;
+    font-size: 100px;
+    color:#008080;
+    cursor: pointer;
+}

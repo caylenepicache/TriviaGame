@@ -16,7 +16,7 @@ var triviaGame = {
 reset: function () {
     clearInterval(counter);
     count = 30;
-    $("#displayTimer").html("Time Remaining: " + count);
+    $("#displayTimer").html("Time Remaining: " + count + " seconds");
 },
 
 start: function() {
@@ -39,7 +39,7 @@ questionTimer: function() {
         timedOut();
     }
     if (count >= 0) {
-    $("#displayTimer").html("Time Remaining: " + count);
+    $("#displayTimer").html("Time Remaining: " + count + " seconds");
     }
 }
 
@@ -118,9 +118,10 @@ questionTimer: function() {
 
   ];
 
-
+//STARTS GAME
 
 $("#startAgain").hide();
+$("#displayTimer").hide();
 $("#startScreen").on('click', function(){
     console.log('Game begins');
     $("#startScreen").hide();
@@ -155,9 +156,7 @@ function letsPlay() {
 
 function retrieveQuestions(){
 
-
     triviaGame.start();
-
 
     $("#displayTimer").show();
     $("#displayQuestion").show();
@@ -172,8 +171,7 @@ function retrieveQuestions(){
     $("#unansweredTally").hide();
     $("#answeredTally").hide();
 
-
-    
+    //display questions
     $("#displayQuestion").html(questionBox[currentQuestion].question);
     $("#choiceone").html(questionBox[currentQuestion].choices[0]);
     $("#choicetwo").html(questionBox[currentQuestion].choices[1]);
@@ -195,12 +193,7 @@ function retrieveQuestions(){
         incorrectResponse();
     };
 
-
-
-
 });
-
-
 
 };
 
@@ -245,12 +238,13 @@ function nextQuestion(){
     currentQuestion++;
     console.log(currentQuestion);
     triviaGame.reset();
-    setTimeout(clearScreen,2000);
-    setTimeout(retrieveQuestions,2100);
+    setTimeout(clearScreen,5000);
+    setTimeout(retrieveQuestions,5100);
 }
     else {
         triviaGame.stop();
-        finalTally();
+        setTimeout(clearScreen,5000);
+        setTimeout(finalTally,5100);
     }
 }
 
@@ -298,12 +292,7 @@ function finalTally(){
         resetGame();
     });
 
-
-
 }
-
-
-
 
 });
 
